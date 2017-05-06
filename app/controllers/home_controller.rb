@@ -37,10 +37,14 @@ class HomeController < ApplicationController
   end
   
   def create_comment
-    comment = Post.find(params[:p_id]).comments.create!(email: params[:email], content: params[:content])
-    comment.save
-    
-    redirect_to '/'
+    comment = Post.find(params[:p_id]).comments.create(email: params[:email], content: params[:content])
+    if comment.invalid?
+      @error_messages = comment.errors.full_messages
+    else
+      comment.save
+      
+      redirect_to '/'
+    end
   end
   
   def destroy_comment
