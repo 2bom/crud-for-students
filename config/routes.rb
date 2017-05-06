@@ -5,6 +5,11 @@ Rails.application.routes.draw do
   get '/update/:p_id' => 'home#update'
   post '/update/:p_id' => 'home#update_post'
   get '/destroy/:p_id' => 'home#destroy'
+  
+  post '/:p_id/create_comment' => 'home#create_comment'
+  get '/:p_id/destroy_comment/:c_id' => 'home#destroy_comment'
+  
+  get '/errors' => 'home#errors'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

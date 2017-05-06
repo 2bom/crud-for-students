@@ -5,10 +5,14 @@ class HomeController < ApplicationController
   end
 
   def write
-    post = Post.create!(email: params[:email], title: params[:title], content: params[:content])
-    post.save
-    
-    redirect_to '/'
+    post = Post.create(email: params[:email], title: params[:title], content: params[:content])
+    if post.invalid?
+      @error_messages = post.errors.full_messages
+    else
+      post.save
+      
+      redirect_to '/'
+    end
   end
   
   def update
@@ -28,6 +32,19 @@ class HomeController < ApplicationController
   def destroy
     one_post = Post.find(params[:p_id])
     one_post.destroy
+    
+    redirect_to '/'
+  end
+  
+  def create_comment
+    comment = Post.find(params[:p_id]).comments.create!(email: params[:email], content: params[:content])
+    comment.save
+    
+    redirect_to '/'
+  end
+  
+  def destroy_comment
+    Post.find(params[:p_id]).comments.find(params[:c_id]).destroy
     
     redirect_to '/'
   end
